@@ -1,51 +1,8 @@
 const mineflayer = require('mineflayer')
 const fs = require('fs');
 
-var http = require("http");
 
-var agent = new http.Agent();
-agent.maxSockets = 1;
 
-var sockets = [];
-
-function request(hostname, path, callback) {
-    var options = {
-        hostname: hostname,
-        path: path, 
-        agent: agent, 
-        headers: {"Connection": "keep-alive"}
-    };
-    var req = http.get(options, function(res) {
-        res.setEncoding('utf8');
-        var body = "";
-        res.on('data', function (chunk) {
-            body += chunk;
-        });
-        res.on('end', function () {
-            callback(null, res, body);
-        });
-    });
-    req.on('error', function(e) {
-        return callback(error);
-    });
-    req.on("socket", function (socket) {
-        if (sockets.indexOf(socket) === -1) {
-            console.log("new socket created");
-            sockets.push(socket);
-            socket.on("close", function() {
-                console.log("socket has been closed");
-            });
-        }
-    });
-}
-
-function run() {
-    request('www.twilio.com', '/', function (error, res, body) {
-        setTimeout(run, 1000);
-    });
-}
-
-run();
 
 
 let rawdata = fs.readFileSync('config.json');
