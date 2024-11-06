@@ -23,6 +23,7 @@ function getRandomArbitrary(min, max) {
 }
 bot.on('login',function(){
 	console.log("Logged In")
+	bot.chat("/login 10010001")
 });
 bot.on('time', function() {
     if (connected <1) {
